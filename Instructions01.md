@@ -1,5 +1,5 @@
 
-# Feature summary of python-oracledb and cx_oracle
+## Feature summary of python-oracledb and cx_oracle
 https://python-oracledb.readthedocs.io/en/latest/user_guide/appendix_a.html#featuresummary
 
 
