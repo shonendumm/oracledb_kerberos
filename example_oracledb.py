@@ -13,7 +13,7 @@ import oracledb
 
 # Set the Oracle environment variables. See https://python-oracledb.readthedocs.io/en/stable/user_guide/initialization.html#oracle-environment-variables-for-python-oracledb-thick-mode 
 # It is recommended to set Oracle variables in the environment before calling Python. 
-# However, they may also be set in the application with os.putenv() before the first connection is established. 
+# Alternatively, use os.putenv() before the first connection is established. 
 os.environ['ORACLE_HOME'] = '/usr/lib/oracle/21/client64'
 os.environ['TNS_ADMIN'] = '/usr/lib/oracle/21/client64/network/admin' # directory containing the tnsnames.ora or sqlnet.ora file
 
@@ -23,12 +23,11 @@ os.environ['TNS_ADMIN'] = '/usr/lib/oracle/21/client64/network/admin' # director
 # or export LD_LIBRARY_PATH="/usr/lib/oracle/21/client64/lib"
 
 
-
-d = None  # default suitable for Linux
+# Initialize the Oracle client library
+oracle_instant_client = None  # default suitable for Linux
 if platform.system() == "Windows":
-  d = os.environ.get("ORACLE_CLIENT_LIB_DIR")
-oracledb.init_oracle_client(lib_dir=d)
-  # d = r"C:\oracle\instantclient_19_18" # address to the instant client, use raw string to avoid escape characters \U, \n, etc.
+  oracle_instant_client = os.environ.get("ORACLE_CLIENT_LIB_DIR") or r"C:\oracle\instantclient_19_18" # address to the instant client, use raw string to avoid escape characters \U, \n, etc.
+oracledb.init_oracle_client(lib_dir=oracle_instant_client)
 
 
 # Connect to the Oracle database using Kerberos credentials
@@ -36,12 +35,12 @@ dsn = """
 (DESCRIPTION=
     (ADDRESS=(PROTOCOL=TCP)(HOST=example.com)(PORT=1521))
     (CONNECT_DATA=
-        (SERVICE_NAME=orcl) 
+        (SERVICE_NAME=servicename) 
     )
 )
 """
-# SERVICE_NAME=orcl, Specifies the service name of the Oracle database.
-# Note: Make sure to replace the placeholders (hostname, port, servicename, and table_name) with the actual values for your Oracle database.
+# SERVICE_NAME=servicename, Specifies the service name of the Oracle database.
+# Note: Make sure to replace example.com and servicename, or port(?).
 
 connection = oracledb.connect(
     dsn=dsn,
