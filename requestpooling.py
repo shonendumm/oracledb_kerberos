@@ -11,6 +11,12 @@ retries = Retry(total=5,
                 status_forcelist=[ 500, 502, 503, 504, 429 ])
 
 # setting status_forcelist=[429] would cause requests to retry requests that encounter a 429 (Too Many Requests) status code, indicating rate limiting, even though it is not a server error.
+# 500: Internal Server Error
+# 502: Bad Gateway
+# 503: Service Unavailable
+# 504: Gateway Timeout
+# 429: Too Many Requests
+
 
 # {backoff factor} * (2 ** ({number of previous retries})) seconds
 # 0.1 * (2 ** (0)) = 0.1
