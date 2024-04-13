@@ -43,5 +43,26 @@ for completed_future in done:
 # Shutdown the executor
 executor.shutdown()
 
+# Method 4: For two different tasks with different arguments
+# Using with statement to automatically shutdown the executor
+
+# Create a ThreadPoolExecutor with 2 threads
+with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+    # Submit function_one with arg1
+    future1 = executor.submit(function_one, arg1)
+    # Submit function_two with arg2
+    future2 = executor.submit(function_two, arg2)
+
+    # Iterate over completed futures as they become available
+    for future in concurrent.futures.as_completed([future1, future2]):
+        if future == future1:
+            result = future.result()
+            print("Result from function_one:", result)
+        elif future == future2:
+            result = future.result()
+            print("Result from function_two:", result)
+
+
+
 print("All tasks completed")
 print(results_list)
